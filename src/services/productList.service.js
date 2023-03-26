@@ -11,10 +11,10 @@ const findById = async (productId) => {
 
   if (!product) return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
 
-  return { type: null, message: product }
+  return { type: null, message: product };
 };
 
 module.exports = {
   findAll,
   findById,
-}
+};
