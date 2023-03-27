@@ -8,7 +8,7 @@ const { allProducts, product, productMock, newProductMock } = require('./mock/pr
 
 chai.use(sinonChai);
 
-describe('Teste de unidado do controller de produtos', function () {
+describe('Teste de unidade do controller de produtos', function () {
   describe('Listando todos os produtos', function () {
     it('Deve retornar o status 200 e a lista', async function () {
       const res = {};
@@ -69,7 +69,7 @@ describe('Teste de unidado do controller de produtos', function () {
     });
   });
 
-  describe('Cadastrando uma nova pessoa passageira', function () {
+  describe('Cadastrando um novo produto', function () {
     it('Ao enviar dados válidos deve salvar com sucesso', async function () {
       const res = {};
       const req = { body: productMock };
