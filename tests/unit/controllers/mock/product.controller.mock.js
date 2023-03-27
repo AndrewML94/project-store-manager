@@ -20,12 +20,12 @@ const product = {
 
 const productMock = {
   name: 'Casa de madeira'
-}
+};
 
 const newProductMock = {
   id: 4,
   name: 'Casa de madeira'
-}
+};
 
 module.exports = {
   allProducts,

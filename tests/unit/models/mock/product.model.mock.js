@@ -15,9 +15,9 @@ const allProducts = [
 
 const newProduct = {
   name: 'Casa de madeira'
-}
+};
 
 module.exports = {
   allProducts,
   newProduct,
-}
+};
