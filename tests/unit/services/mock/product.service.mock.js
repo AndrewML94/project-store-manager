@@ -19,9 +19,12 @@ const validId = 1;
 
 const invalidName = 'nada';
 
+const validName = 'Casa de madeira';
+
 module.exports = {
   allProducts,
   invalidId,
   validId,
   invalidName,
+  validName,
 };

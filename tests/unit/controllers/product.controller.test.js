@@ -131,6 +131,37 @@ describe('Teste de unidade do controller de produtos', function () {
     });
   });
 
+  describe('Deletando um produto', function () {
+    it('Ao informar um id válido deve deletar com sucesso', async function () {
+      const res = {};
+      const req = { params: { id: 1 } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(productService, 'deleteProduct').resolves({ type: null, message: '' });
+
+      await productController.deleteProduct(req, res);
+
+      expect(res.status).to.have.been.calledWith(204);
+      expect(res.json).to.have.been.calledWith();
+    });
+
+    it('Ao enviar um id de produto inexistente apresenta um erro', async function () {
+      const res = {};
+      const req = { params: { id: 1 } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(productService, 'deleteProduct')
+        .resolves({ type: 'INVALID_VALUE', message: 'Product not found' });
+
+      await productController.deleteProduct(req, res);
+
+      expect(res.status).to.have.been.calledWith(422);
+      expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
+    });
+  });
+
   afterEach(function () {
     sinon.restore();
   });

@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const { productService } = require('../../../src/services');
 const { productModel } = require('../../../src/models');
-const { allProducts, invalidId, validId, invalidName } = require('./mock/product.service.mock');
+const { allProducts, invalidId, validId, invalidName, validName } = require('./mock/product.service.mock');
 
 describe('Teste de unidade do service de produtos', function () {
   describe('Verificando o retorno dos produtos', function () {
@@ -34,10 +34,10 @@ describe('Teste de unidade do service de produtos', function () {
 
   describe('Cadastro de um produto', function () {
     it('Retorna o nome do produto e id caso esteja tudo certo', async function () {
-      sinon.stub(productModel, 'insert').resolves('Casa de madeira');
+      sinon.stub(productModel, 'insert').resolves(validName);
       sinon.stub(productModel, 'findById').resolves(5);
 
-      const result = await productService.createProduct('Casa de madeira');
+      const result = await productService.createProduct(validName);
       
       expect(result.type).to.be.equal(null);
       expect(result.message).to.deep.equal(5)
@@ -53,12 +53,12 @@ describe('Teste de unidade do service de produtos', function () {
 
   describe('Atualização de um produto', function () {
     it('Retorna o nome do produto e id caso esteja tudo certo', async function () {
-      sinon.stub(productModel, 'updateProduct').resolves(1, 'Casa de madeira');
+      sinon.stub(productModel, 'updateProduct').resolves(1, validName);
 
-      const result = await productService.updateProduct(1, 'Casa de madeira');
+      const result = await productService.updateProduct(1, validName);
 
       expect(result.type).to.be.equal(null);
-      expect(result.message).to.deep.equal({ id: 1, name: 'Casa de madeira'})
+      expect(result.message).to.deep.equal({ id: 1, name: validName})
     });
 
     it('Retorna um erro ao passar um nome inválido', async function () {
@@ -69,7 +69,25 @@ describe('Teste de unidade do service de produtos', function () {
     });
 
     it('Retorna um erro ao passar um id inválido', async function () {
-      const result = await productService.updateProduct(7, 'Casa de madeira');
+      const result = await productService.updateProduct(7, validName);
+
+      expect(result.type).to.equal('PRODUCT_NOT_FOUND');
+      expect(result.message).to.equal('Product not found')
+    });
+  });
+
+  describe('Deletando um produto', function () {
+    it('Não retorna nada caso esteja tudo certo', async function () {
+      sinon.stub(productModel, 'deleteProduct').resolves(1);
+
+      const result = await productService.deleteProduct(1);
+
+      expect(result.type).to.be.equal(null);
+      expect(result.message).to.deep.equal('');
+    });
+
+    it('Retorna um erro ao passar um id inválido', async function () {
+      const result = await productService.deleteProduct(7);
 
       expect(result.type).to.equal('PRODUCT_NOT_FOUND');
       expect(result.message).to.equal('Product not found')
