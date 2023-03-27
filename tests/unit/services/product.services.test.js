@@ -51,6 +51,31 @@ describe('Teste de unidade do service de produtos', function () {
     });
   });
 
+  describe('Atualização de um produto', function () {
+    it('Retorna o nome do produto e id caso esteja tudo certo', async function () {
+      sinon.stub(productModel, 'updateProduct').resolves(1, 'Casa de madeira');
+
+      const result = await productService.updateProduct(1, 'Casa de madeira');
+
+      expect(result.type).to.be.equal(null);
+      expect(result.message).to.deep.equal({ id: 1, name: 'Casa de madeira'})
+    });
+
+    it('Retorna um erro ao passar um nome inválido', async function () {
+      const result = await productService.updateProduct(1, invalidName);
+
+      expect(result.type).to.equal('INVALID_VALUE');
+      expect(result.message).to.equal('"name" length must be at least 5 characters long')
+    });
+
+    it('Retorna um erro ao passar um id inválido', async function () {
+      const result = await productService.updateProduct(7, 'Casa de madeira');
+
+      expect(result.type).to.equal('PRODUCT_NOT_FOUND');
+      expect(result.message).to.equal('Product not found')
+    });
+  });
+
   afterEach(function () {
     sinon.restore();
   });

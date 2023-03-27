@@ -29,6 +29,14 @@ describe('Teste de unidade do model de produtos', function () {
     expect(result).to.equal(5);
   });
 
+  it('Atualizando um produto já existente', async function () {
+    sinon.stub(connection, 'execute').resolves([{ name: 'casa de madeira' }]);
+
+    const result = await productModel.updateProduct(1, 'casa de madeira');
+
+    expect(result).to.equal();
+  });
+
   afterEach(function () {
     sinon.restore();
   });

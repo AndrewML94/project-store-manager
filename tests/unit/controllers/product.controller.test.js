@@ -4,7 +4,7 @@ const sinonChai = require('sinon-chai');
 const { expect } = chai;
 const { productService } = require('../../../src/services');
 const { productController } = require('../../../src/controllers');
-const { allProducts, product, productMock, newProductMock } = require('./mock/product.controller.mock');
+const { allProducts, product, productMock, newProductMock, updateProductMock } = require('./mock/product.controller.mock');
 
 chai.use(sinonChai);
 
@@ -94,6 +94,37 @@ describe('Teste de unidade do controller de produtos', function () {
         .resolves({ type: 'INVALID_VALUE', message: '"name" length must be at least 5 characters long' });
 
       await productController.createProduct(req, res);
+
+      expect(res.status).to.have.been.calledWith(422);
+      expect(res.json).to.have.been.calledWith({ message: '"name" length must be at least 5 characters long' });
+    });
+  });
+
+  describe('Atualizando um produto', function () {
+    it('Ao enviar dados válidos deve salvar com sucesso', async function () {
+      const res = {};
+      const req = { params: { id: 1 }, body: { name: 'Casa de madeira' } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(productService, 'updateProduct').resolves({ type: null, message: updateProductMock });
+
+      await productController.updateProduct(req, res);
+
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith(updateProductMock);
+    });
+
+    it('Ao enviar um nome com menos de 5 caracteres retorna um erro', async function () {
+      const res = {};
+      const req = { params: { id: 1 }, body: { name: 'casa' } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(productService, 'updateProduct')
+        .resolves({ type: 'INVALID_VALUE', message: '"name" length must be at least 5 characters long' });
+
+      await productController.updateProduct(req, res);
 
       expect(res.status).to.have.been.calledWith(422);
       expect(res.json).to.have.been.calledWith({ message: '"name" length must be at least 5 characters long' });

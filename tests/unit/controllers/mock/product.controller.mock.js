@@ -27,9 +27,15 @@ const newProductMock = {
   name: 'Casa de madeira'
 };
 
+const updateProductMock = {
+  id: 1,
+  name: 'Casa de madeira'
+}
+
 module.exports = {
   allProducts,
   product,
   productMock,
-  newProductMock
+  newProductMock,
+  updateProductMock,
 };
