@@ -4,6 +4,8 @@ const { validateproductId, validateQuantity } = require('../middlewares/validate
 
 const router = express.Router();
 
+router.get('/', saleController.saleList);
+router.get('/:id', saleController.getSale);
 router.post('/', validateproductId, validateQuantity, saleController.createSale);
 
 module.exports = router;
