@@ -8,12 +8,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-03-26T17:40:27.196Z",
-    "modified": "2023-03-26T22:09:28.665Z",
+    "modified": "2023-03-27T00:31:23.133Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"name\": \"casa de madeira\"\n}",
+      "raw": "{\n  \"name\": \"cas\"\n}",
       "form": []
     },
     "tests": []
