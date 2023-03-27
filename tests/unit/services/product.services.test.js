@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const { productService } = require('../../../src/services');
 const { productModel } = require('../../../src/models');
-const { allProducts, invalidId, validId } = require('./mock/product.service.mock');
+const { allProducts, invalidId, validId, invalidName } = require('./mock/product.service.mock');
 
 describe('Teste de unidade do service de produtos', function () {
   describe('Verificando o retorno dos produtos', function () {
@@ -29,6 +29,25 @@ describe('Teste de unidade do service de produtos', function () {
 
       expect(result.type).to.be.equal('PRODUCT_NOT_FOUND');
       expect(result.message).to.be.equal('Product not found')
+    });
+  });
+
+  describe('Cadastro de um produto', function () {
+    it('Retorna o nome do produto e id caso esteja tudo certo', async function () {
+      sinon.stub(productModel, 'insert').resolves('Casa de madeira');
+      sinon.stub(productModel, 'findById').resolves(5);
+
+      const result = await productService.createProduct('Casa de madeira');
+      
+      expect(result.type).to.be.equal(null);
+      expect(result.message).to.deep.equal(5)
+    });
+
+    it('Retorna um erro ao passar um nome inválido', async function () {
+      const result = await productService.createProduct(invalidName);
+
+      expect(result.type).to.equal('INVALID_VALUE');
+      expect(result.message).to.equal('"name" length must be at least 5 characters long')
     });
   });
 
