@@ -57,7 +57,24 @@ describe('Teste de unidade do service de vendas', function () {
     });
   });
 
+  describe('Deletando uma venda', function () {
+    it('Não retorna nada caso esteja tudo certo', async function () {
+      sinon.stub(saleModel, 'deleteSale').resolves(1);
 
+      const result = await saleService.deleteSale(1);
+
+      expect(result.type).to.be.equal(null);
+      expect(result.message).to.deep.equal('');
+    });
+
+    it('Retorna um erro ao passar um id inválido', async function () {
+      const result = await saleService.deleteSale(7);
+
+      expect(result.type).to.equal('PRODUCT_NOT_FOUND');
+      expect(result.message).to.equal('Sale not found')
+    });
+  });
+  
   afterEach(function () {
     sinon.restore();
   });

@@ -37,10 +37,7 @@ const updateProduct = async (productId, name) => {
 
   await productModel.updateProduct(productId, name);
 
-  const newProductName = {
-    id: productId,
-    name,
-  };
+  const newProductName = { id: productId, name };
 
   return { type: null, message: newProductName };
 };

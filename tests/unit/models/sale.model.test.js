@@ -31,6 +31,14 @@ describe('Teste de unidade do model de vendas', function () {
     expect(result).to.equal();
   });
 
+  it('Deletando uma venda já existente', async function () {
+    sinon.stub(connection, 'execute').resolves([{ insertId: 1 }]);
+
+    const result = await saleModel.deleteSale(1);
+
+    expect(result).to.equal();
+  });
+
   afterEach(function () {
     sinon.restore();
   });

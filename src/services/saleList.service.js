@@ -46,9 +46,35 @@ const deleteSale = async (saleId) => {
   return { type: null, message: '' };
 };
 
+const updateSale = async (id, sales) => {
+  const error = schema.validateQuantity(sales);
+
+  if (error.type) return error;
+  
+  const productDb = await Promise
+    .all(sales.map((elem) => productModel.findById(elem.productId)));
+  const verifyUndefinedProduct = productDb.some((elem) => elem === undefined);
+  const [verifyId] = await saleModel.findIdSale(id);
+
+  if (verifyUndefinedProduct) {
+    return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
+  }
+
+  if (verifyId === undefined) {
+    return { type: 'PRODUCT_NOT_FOUND', message: 'Sale not found' };
+  }
+
+  await Promise.all(sales
+    .map((elem) => saleModel
+    .updateSale(elem.productId, elem.quantity, id)));
+
+  return { message: { saleId: id, itemsUpdated: sales } };
+};
+
 module.exports = {
   createSale,
   findAll,
   findById,
   deleteSale,
+  updateSale,
 };

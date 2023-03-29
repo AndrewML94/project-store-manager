@@ -100,6 +100,38 @@ describe('Teste de unidade do controller de vendas', function () {
     });
   });
 
+  describe('Deletando uma venda', function () {
+    it('Ao informar um id válido deve deletar com sucesso', async function () {
+      const res = {};
+      const req = { params: { id: 1 } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(saleService, 'deleteSale').resolves({ type: null, message: '' });
+
+      await saleController.deleteSale(req, res);
+
+      expect(res.status).to.have.been.calledWith(204);
+      expect(res.json).to.have.been.calledWith();
+    });
+
+    it('Ao enviar um id de venda inexistente apresenta um erro', async function () {
+      const res = {};
+      const req = { params: { id: 1 } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(saleService, 'deleteSale')
+        .resolves({ type: 'INVALID_VALUE', message: 'Sale not found' });
+
+      await saleController.deleteSale(req, res);
+
+      expect(res.status).to.have.been.calledWith(422);
+      expect(res.json).to.have.been.calledWith({ message: 'Sale not found' });
+    });
+  });
+
+
   afterEach(function () {
     sinon.restore();
   });
