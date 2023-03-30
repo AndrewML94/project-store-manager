@@ -162,6 +162,38 @@ describe('Teste de unidade do controller de produtos', function () {
     });
   });
 
+  describe('Pesquisando um produto pelo nome', function () {
+    it('Ao informar um nome válido deve buscar com sucesso', async function () {
+      const res = {};
+      const req = { query: { q: 'martelo' } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(productService, 'searchProduct').resolves({ type: null, message: [{ id: 1, name: 'Martelo de Thor' }] });
+
+      await productController.searchProduct(req, res);
+
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith([{ id: 1, name: 'Martelo de Thor' }]);
+    });
+
+    it('Ao enviar um nome de produto inexistente apresenta um array vazio', async function () {
+      const res = {};
+      const req = { query: { q: 'martelo' } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(productService, 'searchProduct')
+        .resolves({ type: null, message: [] });
+
+      await productController.searchProduct(req, res);
+
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith([]);
+    });
+  });
+
+
   afterEach(function () {
     sinon.restore();
   });

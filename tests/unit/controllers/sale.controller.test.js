@@ -131,6 +131,36 @@ describe('Teste de unidade do controller de vendas', function () {
     });
   });
 
+  describe('Atualizando uma venda', function () {
+    it('Ao enviar dados válidos deve salvar com sucesso', async function () {
+      const res = {};
+      const req = { params: { id: 1 } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(saleService, 'updateSale').resolves({ type: null, message: { saleId: 2, itemsUpdated: [{ productId: 2, quantity: 10 }] } });
+
+      await saleController.updateSale(req, res);
+
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith({ saleId: 2, itemsUpdated: [{ productId: 2, quantity: 10 }] });
+    });
+
+    it('Ao enviar um id de venda incorreta retorna um erro', async function () {
+      const res = {};
+      const req = { params: { id: 10 } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(saleService, 'updateSale')
+        .resolves({ type: 'INVALID_VALUE', message: 'Sale not found' });
+
+      await saleController.updateSale(req, res);
+
+      expect(res.status).to.have.been.calledWith(422);
+      expect(res.json).to.have.been.calledWith({ message: 'Sale not found' });
+    });
+  });
 
   afterEach(function () {
     sinon.restore();

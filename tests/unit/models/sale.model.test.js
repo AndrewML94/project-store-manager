@@ -39,6 +39,16 @@ describe('Teste de unidade do model de vendas', function () {
     expect(result).to.equal();
   });
 
+  it('Atualizando uma venda já existente', async function () {
+    sinon.stub(connection, 'execute').resolves({
+      saleId: 2, itemsUpdated: [{ productId: 2, quantity: 10 }]
+    });
+
+    const result = await saleModel.updateSale(1, 10, 2);
+
+    expect(result).to.equal();
+  });
+
   afterEach(function () {
     sinon.restore();
   });

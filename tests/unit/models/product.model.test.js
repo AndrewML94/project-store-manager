@@ -45,6 +45,14 @@ describe('Teste de unidade do model de produtos', function () {
     expect(result).to.equal();
   });
 
+  it('Pesquisando um produto pelo nome ou parte dele', async function () {
+    sinon.stub(connection, 'execute').resolves([[{ id: 1, name: 'Martelo de Thor' }]]);
+
+    const result = await productModel.searchProduct('martelo');
+
+    expect(result).to.deep.equal([{ id: 1, name: 'Martelo de Thor' }]);
+  });
+
   afterEach(function () {
     sinon.restore();
   });

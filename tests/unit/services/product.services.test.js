@@ -94,6 +94,24 @@ describe('Teste de unidade do service de produtos', function () {
     });
   });
 
+  describe('Produrando um produto pelo nome ou parte dele', function () {
+    it('Retorna o id e o produto caso esteja tudo certo', async function () {
+      sinon.stub(productModel, 'searchProduct').resolves([{ id: 1, name: 'Martelo de Thor' }]);
+
+      const result = await productService.searchProduct('martelo');
+
+      expect(result.type).to.be.equal(null);
+      expect(result.message).to.deep.equal([{ id: 1, name: 'Martelo de Thor' }]);
+    });
+
+    it('Retorna um array vazio ao passar um nome de produto que não exista', async function () {
+      const result = await productService.searchProduct('xablau');
+
+      expect(result.type).to.equal(null);
+      expect(result.message).to.deep.equal([]);
+    });
+  });
+
   afterEach(function () {
     sinon.restore();
   });

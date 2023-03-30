@@ -4,19 +4,18 @@
     "colId": "history",
     "containerId": "",
     "name": "http://localhost:3001/products",
-    "url": "http://localhost:3001/products/search?q=casa",
-    "method": "GET",
+    "url": "http://localhost:3001/sales/10",
+    "method": "PUT",
     "sortNum": 0,
     "created": "2023-03-26T17:40:27.196Z",
-    "modified": "2023-03-30T00:01:54.590Z",
+    "modified": "2023-03-30T01:48:59.996Z",
     "headers": [],
-    "params": [
-      {
-        "name": "q",
-        "value": "casa",
-        "isPath": false
-      }
-    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "[\r\n  {\r\n    \"productId\": 2,\r\n    \"quantity\": 10\r\n  }\r\n]",
+      "form": []
+    },
     "tests": []
   }
 ]

@@ -74,7 +74,38 @@ describe('Teste de unidade do service de vendas', function () {
       expect(result.message).to.equal('Sale not found')
     });
   });
-  
+
+  describe('Atualização de uma venda', function () {
+    it('Retorna o nome da venda e id caso esteja tudo certo', async function () {
+      sinon.stub(saleModel, 'updateSale').resolves([{ saleId: 2, itemsUpdated: [{ productId: 2, quantity: 10 }] }]);
+
+      const result = await saleService.updateSale(2, [{ productId: 2, quantity: 10 }]);
+
+      expect(result.message).to.deep.equal({ saleId: 2, itemsUpdated: [{ productId: 2, quantity: 10 }]})
+    });
+
+    it('Retorna um erro ao passar um id de produto inválido', async function () {
+      const result = await saleService.updateSale(2, [{ productId: 20, quantity: 10 }]);
+
+      expect(result.type).to.equal('PRODUCT_NOT_FOUND');
+      expect(result.message).to.equal('Product not found')
+    });
+
+    it('Retorna um erro ao passar uma quantidade inválida', async function () {
+      const result = await saleService.updateSale(2, [{ productId: 2, quantity: -4 }]);
+
+      expect(result.type).to.equal('INVALID_VALUE');
+      expect(result.message).to.equal('"quantity" must be greater than or equal to 1')
+    });
+
+    it('Retorna um erro ao passar um id inválido', async function () {
+      const result = await saleService.updateSale(20, [{ productId: 2, quantity: 10 }]);
+
+      expect(result.type).to.equal('PRODUCT_NOT_FOUND');
+      expect(result.message).to.deep.equal('Sale not found');
+    });
+  });
+
   afterEach(function () {
     sinon.restore();
   });

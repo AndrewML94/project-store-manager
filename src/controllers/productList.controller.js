@@ -51,9 +51,7 @@ const deleteProduct = async (req, res) => {
 const searchProduct = async (req, res) => {
   const { q } = req.query;
 
-  const { type, message } = await productService.searchProduct(q.toLowerCase());
-
-  if (type) return res.status(errorMap.mapError(type)).json({ message });
+  const { message } = await productService.searchProduct(q.toLowerCase());
 
   res.status(200).json(message);
 };
